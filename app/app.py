@@ -31,6 +31,7 @@ app = dash.Dash(
     external_stylesheets=[dbc.themes.FLATLY],
 )
 app.config.suppress_callback_exceptions = True
+app.title = "GNSS-RFI"
 
 server = app.server
 # %% Index
@@ -40,7 +41,7 @@ navbar = page.get_navbar()
 jumbotron = html.Div(
     dbc.Container(
         [
-            html.H1("Impact of Jamming on Civil Aviation", className="display-3"),
+            html.H1("Impact of GNSS-RFI on Civil Aviation", className="display-3"),
             html.P(
                 "This dashboard shows an analysis of effect of GNSS RFI on civil "
                 "aviation between February and end of August 22 for different zones in "
@@ -69,12 +70,12 @@ jumbotron = html.Div(
                 ],
             ),
             html.Hr(className="my-2"),
-            html.P(
-                "",
-            ),
-            html.P(
-                dbc.Button("OSN Symposium Paper", color="primary"), className="lead"
-            ),
+            # html.P(
+            #     "",
+            # ),
+            # html.P(
+            #     dbc.Button("OSN Symposium Paper", color="primary"), className="lead"
+            # ),
         ],
         fluid=True,
         className="py-3",
@@ -87,13 +88,18 @@ index_page = html.Div(
         navbar,
         jumbotron,
         html.Div([html.H3("GNSS RFI - Time Evolution")]),
-        dcc.Graph(
-            figure=anim_kali,
-            id="anim_kali",
-            style={"height": "80%", "width": "80%"},
-            # config={
-            #     "responsive": True,
-            # },
+        html.Div(
+            [
+                dcc.Graph(
+                    figure=anim_kali,
+                    id="anim_kali",
+                    style={"height": "70%", "width": "100%"},
+                    # config={
+                    #     "responsive": True,
+                    # },
+                ),
+            ],
+            className="h-100",
         ),
     ]
 )
@@ -126,16 +132,19 @@ def display_page(pathname):
 
 @app.callback(Output("buromo-link", "active"), [Input("url", "pathname")])
 def set_page_1_active(pathname):
+    app.title = "GNSS-RFI - Bu / Ro / Mo"
     return pathname == "/buromo"
 
 
 @app.callback(Output("kal-link", "active"), [Input("url", "pathname")])
 def set_page_1_active(pathname):
+    app.title = "GNSS-RFI - Kaliningrad"
     return pathname == "/kal"
 
 
 @app.callback(Output("cyp-link", "active"), [Input("url", "pathname")])
 def set_page_1_active(pathname):
+    app.title = "GNSS-RFI - Cyprus"
     return pathname == "/cyp"
 
 
