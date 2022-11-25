@@ -7,6 +7,10 @@ import plotly
 import dash
 from pages import page
 
+try:
+    from google.cloud import storage
+except ImportError:
+    pass
 
 try:
     debug = False if os.environ["DASH_DEBUG_MODE"] == "False" else True
@@ -137,4 +141,4 @@ def set_page_1_active(pathname):
 
 # %% Main
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port="8050", debug=debug)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)), debug=debug)
