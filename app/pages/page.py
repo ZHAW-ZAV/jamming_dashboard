@@ -145,7 +145,7 @@ def load_plots(zone: str):
         fig_jam_normalized = pickle.load(handle)
     with open(path.join("figures", f"fig_traffic_map_{zone}.pkl"), "rb") as handle:
         fig_traffic_map = pickle.load(handle)
-    with open(path.join("figures", f"hourly_hm_{zone}.pkl"), "rb") as handle:
+    with open(path.join("figures", f"30m_hm_{zone}.pkl"), "rb") as handle:
         jam_git_hm = pickle.load(handle)
     with open(path.join("figures", f"fig_daily_jammed_{zone}.pkl"), "rb") as handle:
         fig_daily_jam = pickle.load(handle)
@@ -153,7 +153,7 @@ def load_plots(zone: str):
         fig_simult_ac_jammed = pickle.load(handle)
     with open(path.join("figures", f"jammed_duration_box_{zone}.pkl"), "rb") as handle:
         jammed_duration_box = pickle.load(handle)
-    with open(path.join("figures", f"hourly_hm_{zone}.pkl"), "rb") as handle:
+    with open(path.join("figures", f"30m_hm_{zone}.pkl"), "rb") as handle:
         HM_30M = pickle.load(handle)
     return (
         fig_jam_map,

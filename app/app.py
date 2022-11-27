@@ -109,7 +109,8 @@ buromo_layout = page.get_layout(zone="buromo", navbar=navbar)
 try:
     kal_layout = page.get_layout(zone="kal", navbar=navbar)
     cyp_layout = page.get_layout(zone="cyp", navbar=navbar)
-except:
+except Exception as e:
+    print(e)
     pass
 
 # %% App Layout
