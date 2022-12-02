@@ -6,7 +6,7 @@ import plotly.express as px
 import plotly
 import dash
 from pages import page
-import json
+
 import plotly.io as pio
 
 
@@ -149,9 +149,8 @@ except Exception as e:
     pass
 try:
     cyp_layout = page.get_layout(zone="cyp", navbar=navbar)
-    print("coooooool")
 except Exception as e:
-    print("nooo", e)
+    print(e)
     pass
 
 # %% App Layout
@@ -194,17 +193,16 @@ zone = "cyp"
 
 
 @app.callback(
-    Output("click-data", "children"),
     Output(f"anim_{zone}", "figure"),
     Input(f"git_hm_{zone}", "clickData"),
 )
 def display_click_data(clickData):
     fname = clickData["points"][0]["x"] + " " + clickData["points"][0]["y"] + ".json"
-    print(fname)
-    fig = pio.read_json(os.path.join("animations", fname))
-    return json.dumps(clickData, indent=2), fig
+    fig = pio.read_json(os.path.join("animations", zone, fname))
+    return fig
 
 
 # %% Main
 if __name__ == "__main__":
+    print("loaded")
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8050)), debug=debug)

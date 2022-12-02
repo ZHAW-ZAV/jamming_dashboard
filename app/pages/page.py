@@ -5,6 +5,7 @@ import plotly.io as pio
 from os import path
 import pickle
 from dash.dependencies import Input, Output
+
 import json
 
 
@@ -172,7 +173,6 @@ def load_plots(zone: str):
 
 
 def get_layout(zone: str, navbar):
-
     (
         fig_jam_map,
         fig_jam_normalized,
@@ -247,23 +247,6 @@ def get_layout(zone: str, navbar):
                                     dcc.Graph(
                                         id=f"anim_{zone}",
                                         style={"height": "100%", "width": "100%"},
-                                        # config={
-                                        #     "responsive": True,
-                                        # },
-                                    ),
-                                    html.Div(
-                                        [
-                                            dcc.Markdown(
-                                                """
-                **Click Data**
-
-                Click on points in the graph.
-            """
-                                            ),
-                                            html.Pre(
-                                                id="click-data", style=styles["pre"]
-                                            ),
-                                        ],
                                     ),
                                 ],
                                 width=4,
