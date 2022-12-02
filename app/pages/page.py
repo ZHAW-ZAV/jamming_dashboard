@@ -1,8 +1,11 @@
 from dash import html, dcc
 import dash_bootstrap_components as dbc
 import plotly.express as px
+import plotly.io as pio
 from os import path
 import pickle
+from dash.dependencies import Input, Output
+import json
 
 
 def get_navbar():
@@ -139,35 +142,37 @@ def drawFigure(fig, card_header=None, id=None):
 
 
 def load_plots(zone: str):
-    with open(path.join("figures", f"fig_jam_map_{zone}.pkl"), "rb") as handle:
-        fig_jam_map = pickle.load(handle)
-    with open(path.join("figures", f"fig_jam_normalized_{zone}.pkl"), "rb") as handle:
-        fig_jam_normalized = pickle.load(handle)
-    with open(path.join("figures", f"fig_traffic_map_{zone}.pkl"), "rb") as handle:
-        fig_traffic_map = pickle.load(handle)
-    with open(path.join("figures", f"30m_hm_{zone}.pkl"), "rb") as handle:
-        jam_git_hm = pickle.load(handle)
-    with open(path.join("figures", f"fig_daily_jammed_{zone}.pkl"), "rb") as handle:
-        fig_daily_jam = pickle.load(handle)
-    with open(path.join("figures", f"fig_simult_ac_jammed_{zone}.pkl"), "rb") as handle:
-        fig_simult_ac_jammed = pickle.load(handle)
-    with open(path.join("figures", f"jammed_duration_box_{zone}.pkl"), "rb") as handle:
-        jammed_duration_box = pickle.load(handle)
-    with open(path.join("figures", f"30m_hm_{zone}.pkl"), "rb") as handle:
-        HM_30M = pickle.load(handle)
+    fig_jam_map = pio.read_json(path.join("figures", f"fig_jam_map_{zone}.json"))
+    fig_traffic_map = pio.read_json(
+        path.join("figures", f"fig_traffic_map_{zone}.json")
+    )
+    fig_jam_normalized = pio.read_json(
+        path.join("figures", f"fig_jam_normalized_{zone}.json")
+    )
+    fig_simult_jammed = pio.read_json(
+        path.join("figures", f"fig_simult_jammed_v_{zone}.json")
+    )
+    fig_git_hm = pio.read_json(path.join("figures", f"git_hm_{zone}.json"))
+    fig_daily_jammed = pio.read_json(
+        path.join("figures", f"fig_daily_jammed_{zone}.json")
+    )
+    fig_jam_duration = pio.read_json(
+        path.join("figures", f"fig_jam_duration_v_{zone}.json")
+    )
+
     return (
         fig_jam_map,
         fig_jam_normalized,
         fig_traffic_map,
-        jam_git_hm,
-        fig_daily_jam,
-        fig_simult_ac_jammed,
-        jammed_duration_box,
-        HM_30M,
+        fig_git_hm,
+        fig_daily_jammed,
+        fig_simult_jammed,
+        fig_jam_duration,
     )
 
 
 def get_layout(zone: str, navbar):
+
     (
         fig_jam_map,
         fig_jam_normalized,
@@ -176,9 +181,8 @@ def get_layout(zone: str, navbar):
         fig_daily_jam,
         fig_simult_ac_jammed,
         jammed_duration_box,
-        HM_30M,
     ) = load_plots(zone)
-
+    styles = {"pre": {"border": "thin lightgrey solid", "overflowX": "scroll"}}
     layout = html.Div(
         [
             dbc.Container(
@@ -236,7 +240,33 @@ def get_layout(zone: str, navbar):
                                         id=f"git_hm_{zone}",
                                     )
                                 ],
-                                width=12,
+                                width=8,
+                            ),
+                            dbc.Col(
+                                [
+                                    dcc.Graph(
+                                        id=f"anim_{zone}",
+                                        style={"height": "100%", "width": "100%"},
+                                        # config={
+                                        #     "responsive": True,
+                                        # },
+                                    ),
+                                    html.Div(
+                                        [
+                                            dcc.Markdown(
+                                                """
+                **Click Data**
+
+                Click on points in the graph.
+            """
+                                            ),
+                                            html.Pre(
+                                                id="click-data", style=styles["pre"]
+                                            ),
+                                        ],
+                                    ),
+                                ],
+                                width=4,
                             ),
                         ],
                         align="center",
@@ -285,4 +315,5 @@ def get_layout(zone: str, navbar):
             )
         ]
     )
+
     return layout

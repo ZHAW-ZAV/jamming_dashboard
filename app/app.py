@@ -6,11 +6,9 @@ import plotly.express as px
 import plotly
 import dash
 from pages import page
+import json
+import plotly.io as pio
 
-try:
-    from google.cloud import storage
-except ImportError:
-    pass
 
 try:
     debug = False if os.environ["DASH_DEBUG_MODE"] == "False" else True
@@ -19,10 +17,14 @@ except KeyError:
     debug = True
 
 
-anim_kali = plotly.io.read_json("assets/anim_kali.json")
-anim_kali.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 200
-anim_kali.layout.updatemenus[0].buttons[0].args[1]["transition"]["duration"] = 100
-anim_kali.update_layout(height=800)
+jam_map_anim = plotly.io.read_json(
+    os.path.join("figures", "fig_jam_normalized_anim_all.json")
+)
+jam_map_anim.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 200
+jam_map_anim.layout.updatemenus[0].buttons[0].args[1]["transition"]["duration"] = 0
+jam_map_anim.update_layout(
+    height=800, margin={"l": 20, "r": 20, "t": 20, "b": 20}, mapbox=dict(zoom=3)
+)
 
 
 # Build App
@@ -70,6 +72,7 @@ jumbotron = html.Div(
                 ],
             ),
             html.Hr(className="my-2"),
+            html.P("This research was funded by Armasuisse."),
             # html.P(
             #     "",
             # ),
@@ -86,31 +89,69 @@ jumbotron = html.Div(
 index_page = html.Div(
     [
         navbar,
-        jumbotron,
-        html.Div([html.H3("GNSS RFI - Time Evolution")]),
-        html.Div(
+        dbc.Container(
             [
-                dcc.Graph(
-                    figure=anim_kali,
-                    id="anim_kali",
-                    style={"height": "70%", "width": "100%"},
-                    # config={
-                    #     "responsive": True,
-                    # },
+                dbc.Row(
+                    [
+                        dbc.Col(
+                            [jumbotron],
+                            lg=6,
+                            md=12,
+                            xs=12,
+                        ),
+                        dbc.Col(
+                            [
+                                html.Div(
+                                    [
+                                        dcc.Graph(
+                                            figure=jam_map_anim,
+                                            id="jam_map_anim",
+                                            style={"height": "70%", "width": "100%"},
+                                            # config={
+                                            #     "responsive": True,
+                                            # },
+                                        ),
+                                    ],
+                                    # className="h-100",
+                                ),
+                            ],
+                            lg=6,
+                            md=12,
+                            xs=12,
+                        ),
+                    ],
+                    style={
+                        "max-width": 2000,
+                        " margin-left": "auto",
+                        " margin-right": "auto",
+                    },
+                    justify="center",
+                    align="center",
                 ),
             ],
-            className="h-100",
+            fluid=True,
+            style={
+                "max-width": 2000,
+                " margin-left": "auto",
+                " margin-right": "auto",
+            },
         ),
-    ]
+    ],
 )
 
 # %% Pages Loading
 buromo_layout = page.get_layout(zone="buromo", navbar=navbar)
 try:
     kal_layout = page.get_layout(zone="kal", navbar=navbar)
-    cyp_layout = page.get_layout(zone="cyp", navbar=navbar)
+
 except Exception as e:
-    print(e)
+    print("yyyyy", e)
+    pass
+try:
+    cyp_layout = page.get_layout(zone="cyp", navbar=navbar)
+    print("coooooool")
+except Exception as e:
+    print("nooo", e)
     pass
 
 # %% App Layout
@@ -133,7 +174,7 @@ def display_page(pathname):
 
 @app.callback(Output("buromo-link", "active"), [Input("url", "pathname")])
 def set_page_1_active(pathname):
-    app.title = "GNSS-RFI - Bu / Ro / Mo"
+    app.title = "GNSS-RFI - Bu/Ro/Mo"
     return pathname == "/buromo"
 
 
@@ -149,6 +190,21 @@ def set_page_1_active(pathname):
     return pathname == "/cyp"
 
 
+zone = "cyp"
+
+
+@app.callback(
+    Output("click-data", "children"),
+    Output(f"anim_{zone}", "figure"),
+    Input(f"git_hm_{zone}", "clickData"),
+)
+def display_click_data(clickData):
+    fname = clickData["points"][0]["x"] + " " + clickData["points"][0]["y"] + ".json"
+    print(fname)
+    fig = pio.read_json(os.path.join("animations", fname))
+    return json.dumps(clickData, indent=2), fig
+
+
 # %% Main
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)), debug=debug)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8050)), debug=debug)
