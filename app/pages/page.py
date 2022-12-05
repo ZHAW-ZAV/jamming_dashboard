@@ -89,7 +89,7 @@ def get_navbar(app):
                                         dbc.Col(
                                             [
                                                 html.Img(
-                                                    src=app.get_asset_url("zhawe.png"),
+                                                    src=app.get_asset_url("zhaw.png"),
                                                     # src="assets/zhaw.png",
                                                     height="50px",
                                                 ),

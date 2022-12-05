@@ -34,8 +34,9 @@ app = dash.Dash(
 )
 app.config.suppress_callback_exceptions = True
 app.title = "GNSS-RFI"
-
+# zhaw_logo = app.get_asset_url("zhaw.png")
 server = app.server
+
 # %% Index
 # Navbar
 navbar = page.get_navbar(app)
