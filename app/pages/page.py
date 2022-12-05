@@ -15,7 +15,7 @@ fig_anim = igure = px.scatter_3d().add_annotation(
 )
 
 
-def get_navbar():
+def get_navbar(app):
     return dbc.Navbar(
         dbc.Container(
             [
@@ -89,7 +89,8 @@ def get_navbar():
                                         dbc.Col(
                                             [
                                                 html.Img(
-                                                    src="assets/zhaw.png",
+                                                    src=app.get_asset_url("zhawe.png"),
+                                                    # src="assets/zhaw.png",
                                                     height="50px",
                                                 ),
                                             ],

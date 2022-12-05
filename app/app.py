@@ -38,7 +38,7 @@ app.title = "GNSS-RFI"
 server = app.server
 # %% Index
 # Navbar
-navbar = page.get_navbar()
+navbar = page.get_navbar(app)
 
 jumbotron = html.Div(
     dbc.Container(
