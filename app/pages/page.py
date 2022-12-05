@@ -1,12 +1,11 @@
-from dash import html, dcc
+from os import path
+
 import dash_bootstrap_components as dbc
 import plotly.express as px
-import plotly.io as pio
-from os import path
-import pickle
-from dash.dependencies import Input, Output
 import plotly.graph_objects as go
-import json
+import plotly.io as pio
+from dash import dcc, html
+from dash.dependencies import Input, Output
 
 fig_anim = px.scatter_3d().add_annotation(
     text="Click on any cell on the left to replay scenario.",

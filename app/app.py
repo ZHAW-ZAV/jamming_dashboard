@@ -1,14 +1,15 @@
 import os
-from dash import html, dcc
-import dash_bootstrap_components as dbc
-from dash.dependencies import Input, Output
-import plotly.express as px
-import plotly
-import dash
-from pages import page
-import pandas as pd
-import plotly.io as pio
 
+import dash
+import dash_bootstrap_components as dbc
+import pandas as pd
+import plotly
+import plotly.express as px
+import plotly.io as pio
+from dash import dcc, html
+from dash.dependencies import Input, Output
+
+from pages import page
 
 try:
     debug = False if os.environ["DASH_DEBUG_MODE"] == "False" else True
