@@ -4,7 +4,7 @@
 
 ```sh
 docker build -f Dockerfile -t jamming_dashboard .
-docker run -p 8050:8050 -v "$(pwd)"/app:/app --rm jamming_dashboard
+docker run -p 8050:8050 --rm jamming_dashboard
 ```
 
 ## Access the page
