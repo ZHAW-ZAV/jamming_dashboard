@@ -5,6 +5,6 @@ COPY ./app /app
 WORKDIR /app
 RUN set -ex && \
     pip install -r requirements.txt
-# EXPOSE 8050
+EXPOSE 8050
 # CMD ["gunicorn", "-b", "0.0.0.0:8050", "--reload", "app:server"]
-CMD exec gunicorn --bind :$PORT --workers 1 --threads 1 app:server
+CMD exec gunicorn --bind 0.0.0.0:8050 app:server --timeout 600

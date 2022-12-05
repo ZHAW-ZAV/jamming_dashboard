@@ -6,7 +6,7 @@ import plotly.express as px
 import plotly
 import dash
 from pages import page
-
+import pandas as pd
 import plotly.io as pio
 
 
@@ -197,12 +197,19 @@ zone = "cyp"
     Input(f"git_hm_{zone}", "clickData"),
 )
 def display_click_data(clickData):
-    fname = clickData["points"][0]["x"] + " " + clickData["points"][0]["y"] + ".json"
+    from datetime import timedelta
+
+    t = clickData["points"][0]["x"] + " " + clickData["points"][0]["y"]
+    fname = f"{t}.json"
     fig = pio.read_json(os.path.join("animations", zone, fname))
+    fig.update_layout(
+        margin=dict(t=0, r=0, b=0, l=0),
+        autosize=True,
+    )
     return fig
 
 
 # %% Main
 if __name__ == "__main__":
-    print("loaded")
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8050)), debug=debug)
+    host = "0:0:0:0"
+    app.run(host=host, port=int(os.environ.get("PORT", 8050)), debug=debug)

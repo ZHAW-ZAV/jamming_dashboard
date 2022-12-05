@@ -5,8 +5,14 @@ import plotly.io as pio
 from os import path
 import pickle
 from dash.dependencies import Input, Output
-
+import plotly.graph_objects as go
 import json
+
+fig_anim = igure = px.scatter_3d().add_annotation(
+    text="Click on any cell on the left to replay scenario.",
+    showarrow=False,
+    font={"size": 16},
+)
 
 
 def get_navbar():
@@ -240,16 +246,19 @@ def get_layout(zone: str, navbar):
                                         id=f"git_hm_{zone}",
                                     )
                                 ],
-                                width=8,
+                                lg=8,
+                                md=12,
                             ),
                             dbc.Col(
                                 [
-                                    dcc.Graph(
+                                    drawFigure(
+                                        fig_anim,
+                                        card_header="Scenario Replay:",
                                         id=f"anim_{zone}",
-                                        style={"height": "100%", "width": "100%"},
-                                    ),
+                                    )
                                 ],
-                                width=4,
+                                lg=4,
+                                md=12,
                             ),
                         ],
                         align="center",
@@ -265,7 +274,8 @@ def get_layout(zone: str, navbar):
                                         id=f"daily_jam_{zone}",
                                     )
                                 ],
-                                width=6,
+                                lg=6,
+                                md=12,
                             ),
                             dbc.Col(
                                 [
@@ -275,7 +285,9 @@ def get_layout(zone: str, navbar):
                                         id=f"simult_ac_{zone}",
                                     )
                                 ],
-                                width=3,
+                                lg=3,
+                                md=6,
+                                xs=12,
                             ),
                             dbc.Col(
                                 [
@@ -285,7 +297,9 @@ def get_layout(zone: str, navbar):
                                         id=f"jam_duration_{zone}",
                                     )
                                 ],
-                                width=3,
+                                lg=3,
+                                md=6,
+                                xs=12,
                             ),
                         ],
                         align="center",
