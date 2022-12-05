@@ -29,10 +29,9 @@ jam_map_anim.update_layout(
 
 
 # Build App
-app = dash.Dash(
+app = dash.Dash(__name__, 
     meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
     external_stylesheets=[dbc.themes.FLATLY],
-    assets_folder="assets",
 )
 app.config.suppress_callback_exceptions = True
 app.title = "GNSS-RFI"
@@ -214,5 +213,4 @@ def display_click_data(clickData):
 
 # %% Main
 if __name__ == "__main__":
-    host = "0:0:0:0"
-    app.run(host=host, port=8050, debug=debug)
+    app.run(port=int(os.environ.get("PORT", 8050)), debug=debug)

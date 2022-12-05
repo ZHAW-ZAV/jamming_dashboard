@@ -84,11 +84,13 @@ def get_navbar():
                                         # dbc.NavItem(dbc.NavLink("About", href="/")),
                                         dbc.Col(
                                             [
+                                                html.A([
                                                 html.Img(
                                                     src=dash.get_asset_url("zhaw.png"),
                                                     # src="assets/zhaw.png",
                                                     height="50px",
                                                 ),
+                                                 ], href='https://www.zhaw.ch/en/engineering/institutes-centres/zav/')
                                             ],
                                             width={"size": "auto"},
                                         ),
