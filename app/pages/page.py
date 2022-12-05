@@ -1,5 +1,6 @@
 from os import path
 
+import dash
 import dash_bootstrap_components as dbc
 import plotly.express as px
 import plotly.graph_objects as go
@@ -14,7 +15,7 @@ fig_anim = px.scatter_3d().add_annotation(
 )
 
 
-def get_navbar(app):
+def get_navbar():
     return dbc.Navbar(
         dbc.Container(
             [
@@ -84,7 +85,7 @@ def get_navbar(app):
                                         dbc.Col(
                                             [
                                                 html.Img(
-                                                    src=app.get_asset_url("zhaw.png"),
+                                                    src=dash.get_asset_url("zhaw.png"),
                                                     # src="assets/zhaw.png",
                                                     height="50px",
                                                 ),
