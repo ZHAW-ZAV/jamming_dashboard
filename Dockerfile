@@ -3,8 +3,10 @@ FROM python:3.10
 ENV DASH_DEBUG_MODE False
 COPY ./app /app
 WORKDIR /app
-RUN set -ex && \
-    pip install -r requirements.txt
-EXPOSE 8050
-# CMD ["gunicorn", "-b", "0.0.0.0:8050", "--reload", "app:server"]
+COPY poetry.lock pyproject.toml /app
+RUN curl -sSL https://install.python-poetry.org | python3 -
+ENV PATH="${PATH}:/root/.local/bin"
+RUN poetry config virtualenvs.create false \
+    && poetry install
+
 CMD exec gunicorn --bind 0.0.0.0:8050 app:server --timeout 600

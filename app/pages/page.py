@@ -8,7 +8,7 @@ from dash.dependencies import Input, Output
 import plotly.graph_objects as go
 import json
 
-fig_anim = igure = px.scatter_3d().add_annotation(
+fig_anim = px.scatter_3d().add_annotation(
     text="Click on any cell on the left to replay scenario.",
     showarrow=False,
     font={"size": 16},
@@ -89,7 +89,7 @@ def get_navbar(app):
                                         dbc.Col(
                                             [
                                                 html.Img(
-                                                    src=app.get_asset_url("zhawe.png"),
+                                                    src=app.get_asset_url("zhaw.png"),
                                                     # src="assets/zhaw.png",
                                                     height="50px",
                                                 ),
