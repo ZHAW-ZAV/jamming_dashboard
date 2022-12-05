@@ -22,10 +22,6 @@ def get_navbar(app):
                     [
                         dbc.Col(
                             [
-                                # html.Img(
-                                #     src=dash.get_asset_url("logo2.png"),
-                                #     height="40px",
-                                # ),
                                 dbc.NavbarBrand(
                                     "GNSS - RFI",
                                     className="ms-2",
