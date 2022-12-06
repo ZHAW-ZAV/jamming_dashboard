@@ -1,14 +1,15 @@
 import os
-from dash import html, dcc
-import dash_bootstrap_components as dbc
-from dash.dependencies import Input, Output
-import plotly.express as px
-import plotly
-import dash
-from pages import page
-import pandas as pd
-import plotly.io as pio
 
+import dash
+import dash_bootstrap_components as dbc
+import pandas as pd
+import plotly
+import plotly.express as px
+import plotly.io as pio
+from dash import dcc, html
+from dash.dependencies import Input, Output
+
+from pages import page
 
 try:
     debug = False if os.environ["DASH_DEBUG_MODE"] == "False" else True
@@ -17,7 +18,7 @@ except KeyError:
     debug = True
 
 
-jam_map_anim = plotly.io.read_json(
+jam_map_anim = pio.read_json(
     os.path.join("figures", "fig_jam_normalized_anim_all.json")
 )
 jam_map_anim.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 200
@@ -28,7 +29,7 @@ jam_map_anim.update_layout(
 
 
 # Build App
-app = dash.Dash(
+app = dash.Dash(__name__, 
     meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
     external_stylesheets=[dbc.themes.FLATLY],
 )
@@ -39,7 +40,7 @@ server = app.server
 
 # %% Index
 # Navbar
-navbar = page.get_navbar(app)
+navbar = page.get_navbar()
 
 jumbotron = html.Div(
     dbc.Container(
@@ -212,5 +213,4 @@ def display_click_data(clickData):
 
 # %% Main
 if __name__ == "__main__":
-    host = "0:0:0:0"
-    app.run(host=host, port=int(os.environ.get("PORT", 8050)), debug=debug)
+    app.run(port=int(os.environ.get("PORT", 8050)), debug=debug)

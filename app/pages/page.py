@@ -1,12 +1,12 @@
-from dash import html, dcc
+from os import path
+
+import dash
 import dash_bootstrap_components as dbc
 import plotly.express as px
-import plotly.io as pio
-from os import path
-import pickle
-from dash.dependencies import Input, Output
 import plotly.graph_objects as go
-import json
+import plotly.io as pio
+from dash import dcc, html
+from dash.dependencies import Input, Output
 
 fig_anim = px.scatter_3d().add_annotation(
     text="Click on any cell on the left to replay scenario.",
@@ -15,7 +15,7 @@ fig_anim = px.scatter_3d().add_annotation(
 )
 
 
-def get_navbar(app):
+def get_navbar():
     return dbc.Navbar(
         dbc.Container(
             [
@@ -23,10 +23,6 @@ def get_navbar(app):
                     [
                         dbc.Col(
                             [
-                                # html.Img(
-                                #     src=dash.get_asset_url("logo2.png"),
-                                #     height="40px",
-                                # ),
                                 dbc.NavbarBrand(
                                     "GNSS - RFI",
                                     className="ms-2",
@@ -88,11 +84,14 @@ def get_navbar(app):
                                         # dbc.NavItem(dbc.NavLink("About", href="/")),
                                         dbc.Col(
                                             [
+                                                html.A([
                                                 html.Img(
-                                                    src=app.get_asset_url("zhaw.png"),
+                                                    src=dash.get_asset_url("zhaw.png"),
                                                     # src="assets/zhaw.png",
                                                     height="50px",
                                                 ),
+                                                 ], 
+                                                 href='https://www.zhaw.ch/en/engineering/institutes-centres/zav/'),
                                             ],
                                             width={"size": "auto"},
                                         ),
