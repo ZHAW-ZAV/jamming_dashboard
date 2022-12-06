@@ -18,7 +18,7 @@ except KeyError:
     debug = True
 
 
-jam_map_anim = plotly.io.read_json(
+jam_map_anim = pio.read_json(
     os.path.join("figures", "fig_jam_normalized_anim_all.json")
 )
 jam_map_anim.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 200

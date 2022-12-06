@@ -90,7 +90,8 @@ def get_navbar():
                                                     # src="assets/zhaw.png",
                                                     height="50px",
                                                 ),
-                                                 ], href='https://www.zhaw.ch/en/engineering/institutes-centres/zav/')
+                                                 ], 
+                                                 href='https://www.zhaw.ch/en/engineering/institutes-centres/zav/'),
                                             ],
                                             width={"size": "auto"},
                                         ),
