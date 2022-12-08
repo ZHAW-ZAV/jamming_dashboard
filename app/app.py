@@ -154,7 +154,11 @@ try:
 except Exception as e:
     print(e)
     pass
-
+try:
+    ch_layout = page.get_layout(zone="ch", navbar=navbar)
+except Exception as e:
+    print(e)
+    pass
 # %% App Layout
 app.layout = html.Div(
     [dcc.Location(id="url", refresh=False), html.Div(id="page-content")]
@@ -169,6 +173,8 @@ def display_page(pathname):
         return kal_layout
     elif pathname == "/cyp":
         return cyp_layout
+    elif pathname == "/ch":
+        return ch_layout
     else:
         return index_page
 
@@ -190,6 +196,10 @@ def set_page_1_active(pathname):
     app.title = "GNSS-RFI - Cyprus"
     return pathname == "/cyp"
 
+@app.callback(Output("ch-link", "active"), [Input("url", "pathname")])
+def set_page_1_active(pathname):
+    app.title = "GNSS-RFI - Switzerland"
+    return pathname == "/ch"
 
 zone = "cyp"
 
@@ -213,4 +223,4 @@ def display_click_data(clickData):
 
 # %% Main
 if __name__ == "__main__":
-    app.run(port=int(os.environ.get("PORT", 8051)), debug=debug)
+    app.run(port=int(os.environ.get("PORT", 8050)), debug=debug)

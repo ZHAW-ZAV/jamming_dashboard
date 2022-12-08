@@ -59,6 +59,11 @@ def get_navbar():
                                                         href="/cyp",
                                                         id="cyp-link",
                                                     ),
+                                                    dbc.DropdownMenuItem(
+                                                        "Switzerland",
+                                                        href="/ch",
+                                                        id="ch-link",
+                                                    ),
                                                 ],
                                                 nav=True,
                                                 in_navbar=True,
