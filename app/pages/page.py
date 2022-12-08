@@ -166,6 +166,15 @@ def load_plots(zone: str):
     fig_jam_duration = pio.read_json(
         path.join("figures", f"fig_jam_duration_v_{zone}.json")
     )
+    fig_jammed_w_GNSS_only = pio.read_json(
+        path.join("figures", f"fig_jammed_w_GNSS_only_{zone}.json")
+    )
+    fig_jammed_w_GNSS_only.update_layout(
+        margin=dict(t=0, r=0, b=0, l=0),
+    )
+    fig_typecodes = pio.read_json(
+        path.join("figures", f"fig_typecodes_{zone}.json")
+    )
 
     return (
         fig_jam_map,
@@ -175,6 +184,8 @@ def load_plots(zone: str):
         fig_daily_jammed,
         fig_simult_jammed,
         fig_jam_duration,
+        fig_jammed_w_GNSS_only,
+        fig_typecodes,
     )
 
 
@@ -187,6 +198,8 @@ def get_layout(zone: str, navbar):
         fig_daily_jam,
         fig_simult_ac_jammed,
         jammed_duration_box,
+        fig_jammed_w_GNSS_only,
+        fig_typecodes,
     ) = load_plots(zone)
     styles = {"pre": {"border": "thin lightgrey solid", "overflowX": "scroll"}}
     layout = html.Div(
@@ -300,6 +313,33 @@ def get_layout(zone: str, navbar):
                                 lg=3,
                                 md=6,
                                 xs=12,
+                            ),
+                        ],
+                        align="center",
+                    ),
+                    dbc.Row(
+                        [
+                            dbc.Col(
+                                [
+                                    drawFigure(
+                                        fig_typecodes,
+                                        card_header="Most common aircraft types:",
+                                        id=f"fig_typecodes_{zone}",
+                                    )
+                                ],
+                                lg=6,
+                                md=12,
+                            ),
+                            dbc.Col(
+                                [
+                                    drawFigure(
+                                        fig_jammed_w_GNSS_only,
+                                        card_header="Jammed flights having GNSS only:",
+                                        id=f"fig_jammed_w_GNSS_only_{zone}",
+                                    )
+                                ],
+                                lg=6,
+                                md=12,
                             ),
                         ],
                         align="center",

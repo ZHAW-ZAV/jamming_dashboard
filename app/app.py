@@ -213,4 +213,4 @@ def display_click_data(clickData):
 
 # %% Main
 if __name__ == "__main__":
-    app.run(port=int(os.environ.get("PORT", 8050)), debug=debug)
+    app.run(port=int(os.environ.get("PORT", 8051)), debug=debug)
