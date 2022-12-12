@@ -118,39 +118,72 @@ def get_navbar():
     )
 
 
-def drawFigure(fig, card_header=None, id=None):
+def drawFigure(fig, card_header=None, id=None, radios=None):
     fig.update_layout(
         autosize=True,
     )
-    return dbc.Card(
-        [
-            dbc.CardHeader(card_header),
-            dbc.CardBody(
-                [
-                    html.Div(
-                        [
-                            dcc.Graph(
-                                figure=fig,
-                                id=id,
-                                style={"height": "100%", "width": "100%"},
-                                # config={
-                                #     "responsive": True,
-                                # },
-                            ),
-                        ],
-                        style={"height": "100%", "width": "100%"},
-                        className="h-100",
-                    )
-                ],
-                style={"height": "100%", "width": "100%"},
-            ),
-        ],
-        style={
-            "padding": 5,
-            "margin": 15,
-            "height": "100%",
-        },
-    )
+    if radios is None:
+        return dbc.Card(
+            [
+                dbc.CardHeader(card_header),
+                dbc.CardBody(
+                    [
+                        html.Div(
+                            [
+                                dcc.Graph(
+                                    figure=fig,
+                                    id=id,
+                                    style={"height": "100%", "width": "100%"},
+                                    # config={
+                                    #     "responsive": True,
+                                    # },
+                                ),
+                            ],
+                            style={"height": "100%", "width": "100%"},
+                            className="h-100",
+                        )
+                    ],
+                    style={"height": "100%", "width": "100%"},
+                ),
+            ],
+            style={
+                "padding": 5,
+                "margin": 15,
+                "height": "100%",
+            },
+        )
+    else:
+        return dbc.Card(
+            [
+                dbc.CardHeader(card_header),
+                dbc.CardBody(
+                    [
+                        html.Div(
+                            [
+                                dcc.RadioItems(radios, radios[0], inline=True, id=id+"_radio"), 
+                                dcc.Graph(
+                                    figure=fig,
+                                    id=id,
+                                    style={"height": "100%", "width": "100%"},
+                                    # config={
+                                    #     "responsive": True,
+                                    # },
+                                ),
+                            ],
+                            style={"height": "100%", "width": "100%"},
+                            className="h-100",
+                        )
+                    ],
+                    style={"height": "100%", "width": "100%"},
+                ),
+            ],
+            style={
+                "padding": 5,
+                "margin": 15,
+                "height": "100%",
+            },
+        )
+
 
 
 def load_plots(zone: str):
@@ -262,6 +295,7 @@ def get_layout(zone: str, navbar):
                                         jam_git_hm,
                                         card_header="Jamming Intensity:",
                                         id=f"git_hm_{zone}",
+                                        radios = ['Absolute', 'Percentage'],
                                     )
                                 ],
                                 lg=8,

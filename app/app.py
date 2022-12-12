@@ -29,7 +29,8 @@ jam_map_anim.update_layout(
 
 
 # Build App
-app = dash.Dash(__name__, 
+app = dash.Dash(
+    __name__,
     meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
     external_stylesheets=[dbc.themes.FLATLY],
 )
@@ -196,24 +197,109 @@ def set_page_1_active(pathname):
     app.title = "GNSS-RFI - Cyprus"
     return pathname == "/cyp"
 
+
 @app.callback(Output("ch-link", "active"), [Input("url", "pathname")])
 def set_page_1_active(pathname):
     app.title = "GNSS-RFI - Switzerland"
     return pathname == "/ch"
 
-zone = "cyp"
+
+# bit of boilerplate code but doesnt work in for loop...
+@app.callback(Output(f"git_hm_kal", "figure"), Input(f"git_hm_kal_radio", "value"))
+def select_git_style(selected):
+    if selected == "Percentage":
+        return pio.read_json(os.path.join("figures", f"git_hm_pct_kal.json"))
+    else:
+        return pio.read_json(os.path.join("figures", f"git_hm_kal.json"))
 
 
 @app.callback(
-    Output(f"anim_{zone}", "figure"),
-    Input(f"git_hm_{zone}", "clickData"),
+    Output(f"git_hm_buromo", "figure"), Input(f"git_hm_buromo_radio", "value")
+)
+def select_git_style(selected):
+    if selected == "Percentage":
+        return pio.read_json(os.path.join("figures", f"git_hm_pct_buromo.json"))
+    else:
+        return pio.read_json(os.path.join("figures", f"git_hm_buromo.json"))
+
+
+@app.callback(Output(f"git_hm_cyp", "figure"), Input(f"git_hm_cyp_radio", "value"))
+def select_git_style(selected):
+    if selected == "Percentage":
+        return pio.read_json(os.path.join("figures", f"git_hm_pct_cyp.json"))
+    else:
+        return pio.read_json(os.path.join("figures", f"git_hm_cyp.json"))
+
+
+@app.callback(Output(f"git_hm_ch", "figure"), Input(f"git_hm_ch_radio", "value"))
+def select_git_style(selected):
+    if selected == "Percentage":
+        return pio.read_json(os.path.join("figures", f"git_hm_pct_ch.json"))
+    else:
+        return pio.read_json(os.path.join("figures", f"git_hm_ch.json"))
+
+
+@app.callback(
+    Output("anim_cyp", "figure"),
+    Input("git_hm_cyp", "clickData"),
 )
 def display_click_data(clickData):
     from datetime import timedelta
 
     t = clickData["points"][0]["x"] + " " + clickData["points"][0]["y"]
     fname = f"{t}.json"
-    fig = pio.read_json(os.path.join("animations", zone, fname))
+    fig = pio.read_json(os.path.join("animations", "cyp", fname))
+    fig.update_layout(
+        margin=dict(t=0, r=0, b=0, l=0),
+        autosize=True,
+    )
+    return fig
+
+
+@app.callback(
+    Output("anim_ch", "figure"),
+    Input("git_hm_ch", "clickData"),
+)
+def display_click_data(clickData):
+    from datetime import timedelta
+
+    t = clickData["points"][0]["x"] + " " + clickData["points"][0]["y"]
+    fname = f"{t}.json"
+    fig = pio.read_json(os.path.join("animations", "ch", fname))
+    fig.update_layout(
+        margin=dict(t=0, r=0, b=0, l=0),
+        autosize=True,
+    )
+    return fig
+
+
+@app.callback(
+    Output("anim_kal", "figure"),
+    Input("git_hm_kal", "clickData"),
+)
+def display_click_data(clickData):
+    from datetime import timedelta
+
+    t = clickData["points"][0]["x"] + " " + clickData["points"][0]["y"]
+    fname = f"{t}.json"
+    fig = pio.read_json(os.path.join("animations", "kal", fname))
+    fig.update_layout(
+        margin=dict(t=0, r=0, b=0, l=0),
+        autosize=True,
+    )
+    return fig
+
+
+@app.callback(
+    Output("anim_buromo", "figure"),
+    Input("git_hm_buromo", "clickData"),
+)
+def display_click_data(clickData):
+    from datetime import timedelta
+
+    t = clickData["points"][0]["x"] + " " + clickData["points"][0]["y"]
+    fname = f"{t}.json"
+    fig = pio.read_json(os.path.join("animations", "buromo", fname))
     fig.update_layout(
         margin=dict(t=0, r=0, b=0, l=0),
         autosize=True,
