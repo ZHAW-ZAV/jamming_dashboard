@@ -32,7 +32,7 @@ jam_map_anim.update_layout(
 app = dash.Dash(
     __name__,
     meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
-    external_stylesheets=[dbc.themes.FLATLY],
+    external_stylesheets=[dbc.themes.FLATLY, dbc.icons.BOOTSTRAP],
 )
 app.config.suppress_callback_exceptions = True
 app.title = "GNSS-RFI"
@@ -207,7 +207,7 @@ def set_page_1_active(pathname):
 # bit of boilerplate code but doesnt work in for loop...
 @app.callback(Output(f"git_hm_kal", "figure"), Input(f"git_hm_kal_radio", "value"))
 def select_git_style(selected):
-    if selected == "Percentage":
+    if len(selected) > 0:
         return pio.read_json(os.path.join("figures", f"git_hm_pct_kal.json"))
     else:
         return pio.read_json(os.path.join("figures", f"git_hm_kal.json"))
@@ -217,7 +217,7 @@ def select_git_style(selected):
     Output(f"git_hm_buromo", "figure"), Input(f"git_hm_buromo_radio", "value")
 )
 def select_git_style(selected):
-    if selected == "Percentage":
+    if len(selected) > 0:
         return pio.read_json(os.path.join("figures", f"git_hm_pct_buromo.json"))
     else:
         return pio.read_json(os.path.join("figures", f"git_hm_buromo.json"))
@@ -225,7 +225,7 @@ def select_git_style(selected):
 
 @app.callback(Output(f"git_hm_cyp", "figure"), Input(f"git_hm_cyp_radio", "value"))
 def select_git_style(selected):
-    if selected == "Percentage":
+    if len(selected) > 0:
         return pio.read_json(os.path.join("figures", f"git_hm_pct_cyp.json"))
     else:
         return pio.read_json(os.path.join("figures", f"git_hm_cyp.json"))
@@ -233,7 +233,7 @@ def select_git_style(selected):
 
 @app.callback(Output(f"git_hm_ch", "figure"), Input(f"git_hm_ch_radio", "value"))
 def select_git_style(selected):
-    if selected == "Percentage":
+    if len(selected) > 0:
         return pio.read_json(os.path.join("figures", f"git_hm_pct_ch.json"))
     else:
         return pio.read_json(os.path.join("figures", f"git_hm_ch.json"))

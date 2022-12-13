@@ -89,14 +89,35 @@ def get_navbar():
                                         # dbc.NavItem(dbc.NavLink("About", href="/")),
                                         dbc.Col(
                                             [
-                                                html.A([
-                                                html.Img(
-                                                    src=dash.get_asset_url("zhaw.png"),
-                                                    # src="assets/zhaw.png",
-                                                    height="50px",
+                                                html.A(
+                                                    [
+                                                        html.Img(
+                                                            src=dash.get_asset_url(
+                                                                "zhaw.png"
+                                                            ),
+                                                            # src="assets/zhaw.png",
+                                                            height="50px",
+                                                        ),
+                                                    ],
+                                                    href="https://www.zhaw.ch/en/engineering/institutes-centres/zav/",
                                                 ),
-                                                 ], 
-                                                 href='https://www.zhaw.ch/en/engineering/institutes-centres/zav/'),
+                                            ],
+                                            width={"size": "auto"},
+                                        ),
+                                        dbc.Col(
+                                            [
+                                                html.A(
+                                                    [
+                                                        html.Img(
+                                                            src=dash.get_asset_url(
+                                                                "cyd.png"
+                                                            ),
+                                                            # src="assets/zhaw.png",
+                                                            height="50px",
+                                                        ),
+                                                    ],
+                                                    href="https://www.ar.admin.ch/en/armasuisse-wissenschaft-und-technologie-w-t/cyber-defence_campus.html",
+                                                ),
                                             ],
                                             width={"size": "auto"},
                                         ),
@@ -118,14 +139,44 @@ def get_navbar():
     )
 
 
-def drawFigure(fig, card_header=None, id=None, radios=None):
+def drawFigure(fig, card_header=None, id=None, radio_txt=None, infos=""):
     fig.update_layout(
         autosize=True,
     )
-    if radios is None:
+    if radio_txt is None:
         return dbc.Card(
             [
-                dbc.CardHeader(card_header),
+                dbc.CardHeader(
+                    [
+                        dbc.Row(
+                            [
+                                dbc.Col(
+                                    [
+                                        html.Div(card_header),
+                                    ]
+                                ),
+                                dbc.Col(
+                                    [
+                                        html.Div(
+                                            [
+                                                html.I(
+                                                    className="bi bi-info-circle-fill me-2"
+                                                ),
+                                            ],
+                                            id=f"info_{id}",
+                                        ),
+                                        dbc.Tooltip(
+                                            infos,
+                                            target=f"info_{id}",
+                                            placement="top",
+                                        ),
+                                    ],
+                                    width="auto",
+                                ),
+                            ]
+                        ),
+                    ]
+                ),
                 dbc.CardBody(
                     [
                         html.Div(
@@ -155,12 +206,61 @@ def drawFigure(fig, card_header=None, id=None, radios=None):
     else:
         return dbc.Card(
             [
-                dbc.CardHeader(card_header),
+                dbc.CardHeader(
+                    [
+                        dbc.Row(
+                            [
+                                dbc.Col(
+                                    [
+                                        html.Div(card_header),
+                                    ]
+                                ),
+                                dbc.Col(
+                                    [
+                                        dbc.Checklist(
+                                            options=[
+                                                {"label": radio_txt, "value": 1},
+                                            ],
+                                            value=[],
+                                            id=id + "_radio",
+                                            switch=True,
+                                        ),
+                                    ],
+                                    width="auto",
+                                ),
+                                dbc.Col(
+                                    [
+                                        html.Div(
+                                            [
+                                                html.I(
+                                                    className="bi bi-info-circle-fill me-2"
+                                                ),
+                                            ],
+                                            id=f"info_{id}",
+                                        ),
+                                        # dbc.Button(
+                                        #     "\u2139",
+                                        #     id=f"info_{id}",
+                                        #     className="mx-2",
+                                        #     n_clicks=0,
+                                        #     size="sm",
+                                        # ),
+                                        dbc.Tooltip(
+                                            infos,
+                                            target=f"info_{id}",
+                                            placement="top",
+                                        ),
+                                    ],
+                                    width="auto",
+                                ),
+                            ]
+                        ),
+                    ]
+                ),
                 dbc.CardBody(
                     [
                         html.Div(
                             [
-                                dcc.RadioItems(radios, radios[0], inline=True, id=id+"_radio"), 
                                 dcc.Graph(
                                     figure=fig,
                                     id=id,
@@ -183,7 +283,6 @@ def drawFigure(fig, card_header=None, id=None, radios=None):
                 "height": "100%",
             },
         )
-
 
 
 def load_plots(zone: str):
@@ -210,9 +309,7 @@ def load_plots(zone: str):
     fig_jammed_w_GNSS_only.update_layout(
         margin=dict(t=0, r=0, b=0, l=0),
     )
-    fig_typecodes = pio.read_json(
-        path.join("figures", f"fig_typecodes_{zone}.json")
-    )
+    fig_typecodes = pio.read_json(path.join("figures", f"fig_typecodes_{zone}.json"))
 
     return (
         fig_jam_map,
@@ -253,6 +350,9 @@ def get_layout(zone: str, navbar):
                                         fig_traffic_map,
                                         card_header="Traffic Flows:",
                                         id=f"traffic_hex_{zone}",
+                                        infos="""The color corresponds 
+                                        to the number of observed samples in each
+                                        hexadecimal bin.""",
                                     ),
                                 ],
                                 lg=4,
@@ -265,6 +365,9 @@ def get_layout(zone: str, navbar):
                                         fig_jam_map,
                                         card_header="Jammed Count:",
                                         id=f"jamming_hex_{zone}",
+                                        infos="""number of observed aircraft positions 
+                                        reporting a NACp of 0 within each hexadecimal 
+                                        bin.""",
                                     )
                                 ],
                                 lg=4,
@@ -277,6 +380,9 @@ def get_layout(zone: str, navbar):
                                         fig_jam_normalized,
                                         card_header="Jammed Percentage:",
                                         id=f"percentage_hex_{zone}",
+                                        infos="""Percentage of aircraft
+                                            affected by RFI per hexadecimal bin.
+                                        """,
                                     )
                                 ],
                                 lg=4,
@@ -295,7 +401,14 @@ def get_layout(zone: str, navbar):
                                         jam_git_hm,
                                         card_header="Jamming Intensity:",
                                         id=f"git_hm_{zone}",
-                                        radios = ['Absolute', 'Percentage'],
+                                        radio_txt=["Percentage"],
+                                        infos="""Number / Percentage of flights 
+                                        influenced by RFI activities per 30-min interval
+                                         over the entire observation period. The 
+                                         colour varies as a function of the number of 
+                                         flights affected by RFI for the corresponding 
+                                        30-min interval.
+                                        """,
                                     )
                                 ],
                                 lg=8,
@@ -324,6 +437,7 @@ def get_layout(zone: str, navbar):
                                         fig_daily_jam,
                                         card_header="Number of jammed flights per day:",
                                         id=f"daily_jam_{zone}",
+                                        infos="Number (blue) and percentage (red) of aircraft affected by RFI per day.",
                                     )
                                 ],
                                 lg=6,
@@ -335,6 +449,16 @@ def get_layout(zone: str, navbar):
                                         fig_simult_ac_jammed,
                                         card_header="Simultaneous Aircraft Jammed:",
                                         id=f"simult_ac_{zone}",
+                                        infos="""Box plot of the number of aircraft 
+                                        simultaneously affected by RFI. \n
+                                        The number of aircraft that are affected 
+                                        simultaneously by RFI activities in AoI-1 was 
+                                        obtained by counting the number of aircraft 
+                                        transmitting a NACp value of 0 for each
+                                        timestamp.\n This is an important metric because
+                                         the more aircraft that are simultaneously 
+                                        affected by RFI, the greater the chance that one
+                                         or more aircraft will require ATC support.""",
                                     )
                                 ],
                                 lg=3,
@@ -347,6 +471,18 @@ def get_layout(zone: str, navbar):
                                         jammed_duration_box,
                                         card_header="Jammed duration per flight:",
                                         id=f"jam_duration_{zone}",
+                                        infos="""Box plot of the duration during which 
+                                        aircraft affected by RFI in AoI-1 had a NACp 
+                                        value of 0.\n Inertial navigation systems (INS) 
+                                        drift over time and therefore can only be used 
+                                        as a sole source of navigation for a limited 
+                                        amount of time. Alternatively, aircraft affected
+                                         by RFI will need to revert to other means of 
+                                        navigation, such as terrestrial radio navigation
+                                         provided they are adequately equipped. 
+                                        Consequently, the duration for which an aircraft
+                                         is affected by RFI is an important metric to 
+                                         monitor. """,
                                     )
                                 ],
                                 lg=3,
@@ -364,6 +500,9 @@ def get_layout(zone: str, navbar):
                                         fig_typecodes,
                                         card_header="Most common aircraft types:",
                                         id=f"fig_typecodes_{zone}",
+                                        infos="""Comparison of aircraft type share 
+                                        between the whole traffic and the RFI impacted 
+                                        flights. """,
                                     )
                                 ],
                                 lg=6,
@@ -375,6 +514,10 @@ def get_layout(zone: str, navbar):
                                         fig_jammed_w_GNSS_only,
                                         card_header="Jammed flights having GNSS only:",
                                         id=f"fig_jammed_w_GNSS_only_{zone}",
+                                        infos="""Occurrence of flights 
+                                        affected by RFI for which no inertial nor 
+                                        terrestrial navigation capabilities have been 
+                                        reported.""",
                                     )
                                 ],
                                 lg=6,
