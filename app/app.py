@@ -21,6 +21,7 @@ except KeyError:
 jam_map_anim = pio.read_json(
     os.path.join("figures", "fig_jam_normalized_anim_all.json")
 )
+jam_map_anim.data[0].z = jam_map_anim.frames[0].data[0].z
 jam_map_anim.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 200
 jam_map_anim.layout.updatemenus[0].buttons[0].args[1]["transition"]["duration"] = 0
 jam_map_anim.update_layout(
@@ -54,14 +55,27 @@ jumbotron = html.Div(
                 className="lead",
             ),
             html.P(
+                """GNSS RFI stands for Global Navigation Satellite System Radio 
+                Frequency Interference. It refers to any type of interference that 
+                disrupts the normal operation of GNSS, which includes systems like GPS 
+                (Global Positioning System) and GLONASS (Global Navigation Satellite 
+                System).""",
+                className="lead",
+            ),
+            html.Hr(className="my-2"),
+            html.P(
                 "Use the navigation bar to select a zone for more details about the "
                 "impact of GNSS RFI on civil aviation.",
                 className="lead",
             ),
             html.Hr(className="my-2"),
             html.P(
-                "ADS-B data from the OpenSky Network has been used to detect flights "
-                "impacted by jamming."
+                [
+                    "ADS-B data from the ",
+                    html.A("OpenSky Network ", href="https://opensky-network.org/"),
+                    "has been used to detect flights ",
+                    "impacted by jamming.",
+                ]
             ),
             html.P(
                 "A flight has been considered as jammed if its transmitted "

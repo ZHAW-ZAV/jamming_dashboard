@@ -310,7 +310,9 @@ def load_plots(zone: str):
         margin=dict(t=0, r=0, b=0, l=0),
     )
     fig_typecodes = pio.read_json(path.join("figures", f"fig_typecodes_{zone}.json"))
-
+    jam_map_anim = pio.read_json(
+        path.join("figures", f"fig_jam_normalized_anim_{zone}.json")
+    )
     return (
         fig_jam_map,
         fig_jam_normalized,
@@ -321,6 +323,7 @@ def load_plots(zone: str):
         fig_jam_duration,
         fig_jammed_w_GNSS_only,
         fig_typecodes,
+        jam_map_anim,
     )
 
 
@@ -335,6 +338,7 @@ def get_layout(zone: str, navbar):
         jammed_duration_box,
         fig_jammed_w_GNSS_only,
         fig_typecodes,
+        jam_map_anim,
     ) = load_plots(zone)
     styles = {"pre": {"border": "thin lightgrey solid", "overflowX": "scroll"}}
     layout = html.Div(
@@ -417,7 +421,7 @@ def get_layout(zone: str, navbar):
                             dbc.Col(
                                 [
                                     drawFigure(
-                                        fig_anim,
+                                        fig_jam_map,
                                         card_header="Scenario Replay:",
                                         id=f"anim_{zone}",
                                     )
