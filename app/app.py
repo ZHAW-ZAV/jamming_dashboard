@@ -64,8 +64,19 @@ jumbotron = html.Div(
             ),
             html.Hr(className="my-2"),
             html.P(
-                "Use the navigation bar to select a zone for more details about the "
-                "impact of GNSS RFI on civil aviation.",
+                [
+                    "Use the navigation bar or click the buttons below to select a zone for more details about the "
+                    "impact of GNSS RFI on civil aviation.",
+                    html.Div(
+                        [
+                            dbc.Button("Romania", color="primary", href="/buromo"),
+                            dbc.Button("Kaliningrad", color="primary", href="/kal"),
+                            dbc.Button("Cyprus", color="primary", href="/cyp"),
+                            dbc.Button("Switzerland", color="primary", href="/ch"),
+                        ],
+                        className="d-grid gap-2 d-md-flex justify-content-md-center",
+                    ),
+                ],
                 className="lead",
             ),
             html.Hr(className="my-2"),
