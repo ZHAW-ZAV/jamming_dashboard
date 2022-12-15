@@ -310,7 +310,10 @@ def load_plots(zone: str):
         margin=dict(t=0, r=0, b=0, l=0),
     )
     fig_typecodes = pio.read_json(path.join("figures", f"fig_typecodes_{zone}.json"))
-
+    jam_map_norm_anim = pio.read_json(
+        path.join("figures", f"fig_jam_normalized_anim_{zone}.json")
+    )
+    jam_map_norm_anim.update_layout(margin={"l": 0, "b": 0, "t": 0, "r": 0})
     return (
         fig_jam_map,
         fig_jam_normalized,
@@ -321,6 +324,7 @@ def load_plots(zone: str):
         fig_jam_duration,
         fig_jammed_w_GNSS_only,
         fig_typecodes,
+        jam_map_norm_anim,
     )
 
 
@@ -335,6 +339,7 @@ def get_layout(zone: str, navbar):
         jammed_duration_box,
         fig_jammed_w_GNSS_only,
         fig_typecodes,
+        jam_map_norm_anim,
     ) = load_plots(zone)
     styles = {"pre": {"border": "thin lightgrey solid", "overflowX": "scroll"}}
     layout = html.Div(
@@ -363,9 +368,9 @@ def get_layout(zone: str, navbar):
                                 [
                                     drawFigure(
                                         fig_jam_map,
-                                        card_header="Jammed Count:",
+                                        card_header="RFI Impacted Flights (absolute):",
                                         id=f"jamming_hex_{zone}",
-                                        infos="""number of observed aircraft positions 
+                                        infos="""Number of received aircraft positions 
                                         reporting a NACp of 0 within each hexadecimal 
                                         bin.""",
                                     )
@@ -378,7 +383,7 @@ def get_layout(zone: str, navbar):
                                 [
                                     drawFigure(
                                         fig_jam_normalized,
-                                        card_header="Jammed Percentage:",
+                                        card_header="RFI Impacted Flights (percentage):",
                                         id=f"percentage_hex_{zone}",
                                         infos="""Percentage of aircraft
                                             affected by RFI per hexadecimal bin.
@@ -399,7 +404,7 @@ def get_layout(zone: str, navbar):
                                 [
                                     drawFigure(
                                         jam_git_hm,
-                                        card_header="Jamming Intensity:",
+                                        card_header="RFI Intensity:",
                                         id=f"git_hm_{zone}",
                                         radio_txt=["Percentage"],
                                         infos="""Number / Percentage of flights 
@@ -417,7 +422,7 @@ def get_layout(zone: str, navbar):
                             dbc.Col(
                                 [
                                     drawFigure(
-                                        fig_anim,
+                                        jam_map_norm_anim,
                                         card_header="Scenario Replay:",
                                         id=f"anim_{zone}",
                                     )
@@ -435,7 +440,7 @@ def get_layout(zone: str, navbar):
                                 [
                                     drawFigure(
                                         fig_daily_jam,
-                                        card_header="Number of jammed flights per day:",
+                                        card_header="Daily Number of Impacted Flights:",
                                         id=f"daily_jam_{zone}",
                                         infos="Number (blue) and percentage (red) of aircraft affected by RFI per day.",
                                     )
@@ -447,7 +452,7 @@ def get_layout(zone: str, navbar):
                                 [
                                     drawFigure(
                                         fig_simult_ac_jammed,
-                                        card_header="Simultaneous Aircraft Jammed:",
+                                        card_header="Simultaneous Jammed Aircraft:",
                                         id=f"simult_ac_{zone}",
                                         infos="""Box plot of the number of aircraft 
                                         simultaneously affected by RFI. \n
@@ -469,7 +474,7 @@ def get_layout(zone: str, navbar):
                                 [
                                     drawFigure(
                                         jammed_duration_box,
-                                        card_header="Jammed duration per flight:",
+                                        card_header="Jammed Duration per Flight:",
                                         id=f"jam_duration_{zone}",
                                         infos="""Box plot of the duration during which 
                                         aircraft affected by RFI in AoI-1 had a NACp 
@@ -498,7 +503,7 @@ def get_layout(zone: str, navbar):
                                 [
                                     drawFigure(
                                         fig_typecodes,
-                                        card_header="Most common aircraft types:",
+                                        card_header="Aircraft Types:",
                                         id=f"fig_typecodes_{zone}",
                                         infos="""Comparison of aircraft type share 
                                         between the whole traffic and the RFI impacted 
@@ -512,7 +517,7 @@ def get_layout(zone: str, navbar):
                                 [
                                     drawFigure(
                                         fig_jammed_w_GNSS_only,
-                                        card_header="Jammed flights having GNSS only:",
+                                        card_header="Jammed Flights with GNSS Nav Only:",
                                         id=f"fig_jammed_w_GNSS_only_{zone}",
                                         infos="""Occurrence of flights 
                                         affected by RFI for which no inertial nor 
