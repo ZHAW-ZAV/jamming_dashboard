@@ -49,24 +49,11 @@ jumbotron = html.Div(
         [
             html.H1("Impact of GNSS-RFI on Civil Aviation", className="display-3"),
             html.P(
-                "This dashboard shows an analysis of effect of GNSS RFI on civil "
-                "aviation between February and end of August 22 for different zones in "
-                "Europe. ",
-                className="lead",
-            ),
-            html.P(
-                """GNSS RFI stands for Global Navigation Satellite System Radio 
-                Frequency Interference. It refers to any type of interference that 
-                disrupts the normal operation of GNSS, which includes systems like GPS 
-                (Global Positioning System) and GLONASS (Global Navigation Satellite 
-                System).""",
-                className="lead",
-            ),
-            html.Hr(className="my-2"),
-            html.P(
                 [
-                    "Use the navigation bar or click the buttons below to select a zone for more details about the "
-                    "impact of GNSS RFI on civil aviation.",
+                    "This dashboard shows an analysis of effect of GNSS RFI on civil "
+                    "aviation between February and end of August 22 for different zones in "
+                    "Europe. ",
+                    html.P(),
                     html.Div(
                         [
                             dbc.Button("Romania", color="primary", href="/buromo"),
@@ -81,6 +68,33 @@ jumbotron = html.Div(
             ),
             html.Hr(className="my-2"),
             html.P(
+                """GNSS RFI also referred as jamming, stands for Global Navigation 
+                Satellite System Radio 
+                Frequency Interference. It refers to any type of interference that 
+                disrupts the normal operation of GNSS, which includes systems like GPS 
+                (Global Positioning System) and GLONASS (Global Navigation Satellite 
+                System).""",
+                # className="lead",
+            ),
+            # html.Hr(className="my-2"),
+            html.P(
+                # [
+                #     "Use the navigation bar or click the buttons below to select a zone for more details about the "
+                #     "impact of GNSS RFI on civil aviation.",
+                #     html.Div(
+                #         [
+                #             dbc.Button("Romania", color="primary", href="/buromo"),
+                #             dbc.Button("Kaliningrad", color="primary", href="/kal"),
+                #             dbc.Button("Cyprus", color="primary", href="/cyp"),
+                #             dbc.Button("Switzerland", color="primary", href="/ch"),
+                #         ],
+                #         className="d-grid gap-2 d-md-flex justify-content-md-center",
+                #     ),
+                # ],
+                # className="lead",
+            ),
+            html.Hr(className="my-2"),
+            html.P(
                 [
                     "ADS-B data from the ",
                     html.A("OpenSky Network ", href="https://opensky-network.org/"),
@@ -89,8 +103,15 @@ jumbotron = html.Div(
                 ]
             ),
             html.P(
-                "A flight has been considered as jammed if its transmitted "
-                "Navigation Accuracy Position indicator has a value:"
+                [
+                    "A flight has been considered as impacted by RFI if its transmitted "
+                    "Navigation Accuracy Position indicator (",
+                    html.A(
+                        "NACp",
+                        href="https://mode-s.org/decode/content/ads-b/7-uncertainty.html#tb:nacp-params",
+                    ),
+                    ") has a value:",
+                ]
             ),
             html.Ul(
                 id="my-list",
@@ -100,7 +121,21 @@ jumbotron = html.Div(
                 ],
             ),
             html.Hr(className="my-2"),
-            html.P("This research was funded by Armasuisse."),
+            html.P(
+                [
+                    "The research was carried out by ",
+                    html.A(
+                        "Zurich University of Applied Sciences - Centre for Aviation ",
+                        href="https://www.zhaw.ch/en/engineering/institutes-centres/zav/",
+                    ),
+                    "and funded by ",
+                    html.A(
+                        "Armasuisse - Cyber Defence Campus",
+                        href="https://www.ar.admin.ch/en/armasuisse-wissenschaft-und-technologie-w-t/cyber-defence_campus.html",
+                    ),
+                    ".",
+                ]
+            ),
             # html.P(
             #     "",
             # ),
@@ -264,72 +299,72 @@ def select_git_style(selected):
         return pio.read_json(os.path.join("figures", f"git_hm_ch.json"))
 
 
-@app.callback(
-    Output("anim_cyp", "figure"),
-    Input("git_hm_cyp", "clickData"),
-)
-def display_click_data(clickData):
-    from datetime import timedelta
+# @app.callback(
+#     Output("anim_cyp", "figure"),
+#     Input("git_hm_cyp", "clickData"),
+# )
+# def display_click_data(clickData):
+#     from datetime import timedelta
 
-    t = clickData["points"][0]["x"] + " " + clickData["points"][0]["y"]
-    fname = f"{t}.json"
-    fig = pio.read_json(os.path.join("animations", "cyp", fname))
-    fig.update_layout(
-        margin=dict(t=0, r=0, b=0, l=0),
-        autosize=True,
-    )
-    return fig
-
-
-@app.callback(
-    Output("anim_ch", "figure"),
-    Input("git_hm_ch", "clickData"),
-)
-def display_click_data(clickData):
-    from datetime import timedelta
-
-    t = clickData["points"][0]["x"] + " " + clickData["points"][0]["y"]
-    fname = f"{t}.json"
-    fig = pio.read_json(os.path.join("animations", "ch", fname))
-    fig.update_layout(
-        margin=dict(t=0, r=0, b=0, l=0),
-        autosize=True,
-    )
-    return fig
+#     t = clickData["points"][0]["x"] + " " + clickData["points"][0]["y"]
+#     fname = f"{t}.json"
+#     fig = pio.read_json(os.path.join("animations", "cyp", fname))
+#     fig.update_layout(
+#         margin=dict(t=0, r=0, b=0, l=0),
+#         autosize=True,
+#     )
+#     return fig
 
 
-@app.callback(
-    Output("anim_kal", "figure"),
-    Input("git_hm_kal", "clickData"),
-)
-def display_click_data(clickData):
-    from datetime import timedelta
+# @app.callback(
+#     Output("anim_ch", "figure"),
+#     Input("git_hm_ch", "clickData"),
+# )
+# def display_click_data(clickData):
+#     from datetime import timedelta
 
-    t = clickData["points"][0]["x"] + " " + clickData["points"][0]["y"]
-    fname = f"{t}.json"
-    fig = pio.read_json(os.path.join("animations", "kal", fname))
-    fig.update_layout(
-        margin=dict(t=0, r=0, b=0, l=0),
-        autosize=True,
-    )
-    return fig
+#     t = clickData["points"][0]["x"] + " " + clickData["points"][0]["y"]
+#     fname = f"{t}.json"
+#     fig = pio.read_json(os.path.join("animations", "ch", fname))
+#     fig.update_layout(
+#         margin=dict(t=0, r=0, b=0, l=0),
+#         autosize=True,
+#     )
+#     return fig
 
 
-@app.callback(
-    Output("anim_buromo", "figure"),
-    Input("git_hm_buromo", "clickData"),
-)
-def display_click_data(clickData):
-    from datetime import timedelta
+# @app.callback(
+#     Output("anim_kal", "figure"),
+#     Input("git_hm_kal", "clickData"),
+# )
+# def display_click_data(clickData):
+#     from datetime import timedelta
 
-    t = clickData["points"][0]["x"] + " " + clickData["points"][0]["y"]
-    fname = f"{t}.json"
-    fig = pio.read_json(os.path.join("animations", "buromo", fname))
-    fig.update_layout(
-        margin=dict(t=0, r=0, b=0, l=0),
-        autosize=True,
-    )
-    return fig
+#     t = clickData["points"][0]["x"] + " " + clickData["points"][0]["y"]
+#     fname = f"{t}.json"
+#     fig = pio.read_json(os.path.join("animations", "kal", fname))
+#     fig.update_layout(
+#         margin=dict(t=0, r=0, b=0, l=0),
+#         autosize=True,
+#     )
+#     return fig
+
+
+# @app.callback(
+#     Output("anim_buromo", "figure"),
+#     Input("git_hm_buromo", "clickData"),
+# )
+# def display_click_data(clickData):
+#     from datetime import timedelta
+
+#     t = clickData["points"][0]["x"] + " " + clickData["points"][0]["y"]
+#     fname = f"{t}.json"
+#     fig = pio.read_json(os.path.join("animations", "buromo", fname))
+#     fig.update_layout(
+#         margin=dict(t=0, r=0, b=0, l=0),
+#         autosize=True,
+#     )
+#     return fig
 
 
 # %% Main
