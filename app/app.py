@@ -19,7 +19,7 @@ except KeyError:
 
 
 jam_map_anim = pio.read_json(
-    os.path.join("figures", "fig_jam_normalized_anim_all.json")
+    os.path.join("figures", "fig_jam_normalized_anim_all_light.json")
 )
 jam_map_anim.data[0].z = jam_map_anim.frames[0].data[0].z
 jam_map_anim.layout.updatemenus[0].buttons[0].args[1]["frame"]["duration"] = 200
@@ -50,9 +50,9 @@ jumbotron = html.Div(
             html.H1("Impact of GNSS-RFI on Civil Aviation", className="display-3"),
             html.P(
                 [
-                    "This dashboard shows an analysis of effect of GNSS RFI on civil "
-                    "aviation between February and end of August 22 for different zones in "
-                    "Europe. ",
+                    "This dashboard shows an analysis of the effect of GNSS RFI on civil"
+                    " aviation between February and end of August 2022 for different "
+                    "areas if interest in Europe. ",
                     html.P(),
                     html.Div(
                         [
@@ -68,31 +68,15 @@ jumbotron = html.Div(
             ),
             html.Hr(className="my-2"),
             html.P(
-                """GNSS RFI also referred as jamming, stands for Global Navigation 
-                Satellite System Radio 
-                Frequency Interference. It refers to any type of interference that 
-                disrupts the normal operation of GNSS, which includes systems like GPS 
-                (Global Positioning System) and GLONASS (Global Navigation Satellite 
-                System).""",
+                """GNSS RFI, also referred to as jamming, stands for Global Navigation 
+                Satellite System Radio Frequency Interference. It refers to any type of 
+                interference that disrupts the normal operation of GNSS, which includes 
+                systems such as GPS (Global Positioning System) and GLONASS (Global 
+                Navigation Satellite System).""",
                 # className="lead",
             ),
             # html.Hr(className="my-2"),
-            html.P(
-                # [
-                #     "Use the navigation bar or click the buttons below to select a zone for more details about the "
-                #     "impact of GNSS RFI on civil aviation.",
-                #     html.Div(
-                #         [
-                #             dbc.Button("Romania", color="primary", href="/buromo"),
-                #             dbc.Button("Kaliningrad", color="primary", href="/kal"),
-                #             dbc.Button("Cyprus", color="primary", href="/cyp"),
-                #             dbc.Button("Switzerland", color="primary", href="/ch"),
-                #         ],
-                #         className="d-grid gap-2 d-md-flex justify-content-md-center",
-                #     ),
-                # ],
-                # className="lead",
-            ),
+            html.P(),
             html.Hr(className="my-2"),
             html.P(
                 [
@@ -123,7 +107,7 @@ jumbotron = html.Div(
             html.Hr(className="my-2"),
             html.P(
                 [
-                    "The research was carried out by ",
+                    "The research was carried out by the",
                     html.A(
                         "Zurich University of Applied Sciences - Centre for Aviation ",
                         href="https://www.zhaw.ch/en/engineering/institutes-centres/zav/",
@@ -136,12 +120,6 @@ jumbotron = html.Div(
                     ".",
                 ]
             ),
-            # html.P(
-            #     "",
-            # ),
-            # html.P(
-            #     dbc.Button("OSN Symposium Paper", color="primary"), className="lead"
-            # ),
         ],
         fluid=True,
         className="py-3",
@@ -164,18 +142,23 @@ index_page = html.Div(
                         ),
                         dbc.Col(
                             [
-                                html.Div(
-                                    [
-                                        dcc.Graph(
-                                            figure=jam_map_anim,
-                                            id="jam_map_anim",
-                                            style={"height": "70%", "width": "100%"},
-                                            # config={
-                                            #     "responsive": True,
-                                            # },
-                                        ),
-                                    ],
-                                    # className="h-100",
+                                dbc.Spinner(
+                                    html.Div(
+                                        [
+                                            dcc.Graph(
+                                                figure=jam_map_anim,
+                                                id="jam_map_anim",
+                                                style={
+                                                    "height": "70%",
+                                                    "width": "100%",
+                                                },
+                                                # config={
+                                                #     "responsive": True,
+                                                # },
+                                            ),
+                                        ],
+                                        # className="h-100",
+                                    ),
                                 ),
                             ],
                             lg=6,
@@ -365,6 +348,11 @@ def select_git_style(selected):
 #         autosize=True,
 #     )
 #     return fig
+
+
+# @app.callback(
+#     Output("jam_map_anim", "figure"),
+# )
 
 
 # %% Main
