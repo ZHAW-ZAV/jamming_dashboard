@@ -104,6 +104,35 @@ jumbotron = html.Div(
                     html.Li("greater than 7 for more than 60 seconds in total."),
                 ],
             ),
+            html.P(
+                [
+                    """While a single aircraft broadcasting a NACp of 0 could be due to 
+                    faulty avionics, simultaneous broadcasts of NACp=0 from multiple 
+                    aircraft in the same geographic location is a strong indicator of 
+                    RFI."""
+                ]
+            ),
+            html.Hr(className="my-2"),
+            html.P(
+                [
+                    "Learn more by reading our related publications on this subject:",
+                    html.Div(
+                        [
+                            dbc.Button(
+                                "OpenSky Network Symposium 22",
+                                color="info",
+                                href="https://www.mdpi.com/2673-4591/28/1/12",
+                            ),
+                            dbc.Button(
+                                "Institute Of Navigation: ITM23",
+                                color="info",
+                                href="/",
+                            ),
+                        ],
+                        className="d-grid gap-2 d-md-flex justify-content-md-center",
+                    ),
+                ]
+            ),
             html.Hr(className="my-2"),
             html.P(
                 [
@@ -280,79 +309,6 @@ def select_git_style(selected):
         return pio.read_json(os.path.join("figures", f"git_hm_pct_ch.json"))
     else:
         return pio.read_json(os.path.join("figures", f"git_hm_ch.json"))
-
-
-# @app.callback(
-#     Output("anim_cyp", "figure"),
-#     Input("git_hm_cyp", "clickData"),
-# )
-# def display_click_data(clickData):
-#     from datetime import timedelta
-
-#     t = clickData["points"][0]["x"] + " " + clickData["points"][0]["y"]
-#     fname = f"{t}.json"
-#     fig = pio.read_json(os.path.join("animations", "cyp", fname))
-#     fig.update_layout(
-#         margin=dict(t=0, r=0, b=0, l=0),
-#         autosize=True,
-#     )
-#     return fig
-
-
-# @app.callback(
-#     Output("anim_ch", "figure"),
-#     Input("git_hm_ch", "clickData"),
-# )
-# def display_click_data(clickData):
-#     from datetime import timedelta
-
-#     t = clickData["points"][0]["x"] + " " + clickData["points"][0]["y"]
-#     fname = f"{t}.json"
-#     fig = pio.read_json(os.path.join("animations", "ch", fname))
-#     fig.update_layout(
-#         margin=dict(t=0, r=0, b=0, l=0),
-#         autosize=True,
-#     )
-#     return fig
-
-
-# @app.callback(
-#     Output("anim_kal", "figure"),
-#     Input("git_hm_kal", "clickData"),
-# )
-# def display_click_data(clickData):
-#     from datetime import timedelta
-
-#     t = clickData["points"][0]["x"] + " " + clickData["points"][0]["y"]
-#     fname = f"{t}.json"
-#     fig = pio.read_json(os.path.join("animations", "kal", fname))
-#     fig.update_layout(
-#         margin=dict(t=0, r=0, b=0, l=0),
-#         autosize=True,
-#     )
-#     return fig
-
-
-# @app.callback(
-#     Output("anim_buromo", "figure"),
-#     Input("git_hm_buromo", "clickData"),
-# )
-# def display_click_data(clickData):
-#     from datetime import timedelta
-
-#     t = clickData["points"][0]["x"] + " " + clickData["points"][0]["y"]
-#     fname = f"{t}.json"
-#     fig = pio.read_json(os.path.join("animations", "buromo", fname))
-#     fig.update_layout(
-#         margin=dict(t=0, r=0, b=0, l=0),
-#         autosize=True,
-#     )
-#     return fig
-
-
-# @app.callback(
-#     Output("jam_map_anim", "figure"),
-# )
 
 
 # %% Main
